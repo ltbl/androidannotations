@@ -44,6 +44,9 @@ public class UiThreadProcessor implements ElementProcessor {
 
 	@Override
 	public void process(Element element, JCodeModel codeModel, EBeansHolder eBeansHolder) throws JClassAlreadyExistsException {
+		UiThread annotation = element.getAnnotation(UiThread.class);
+		String logClassName = annotation.logTo();
+		JClass logClass = eBeansHolder.refClass(logClassName);
 
 		EBeanHolder holder = eBeansHolder.getEnclosingEBeanHolder(element);
 
@@ -51,12 +54,11 @@ public class UiThreadProcessor implements ElementProcessor {
 
 		JMethod delegatingMethod = helper.overrideAnnotatedMethod(executableElement, holder);
 
-		JDefinedClass anonymousRunnableClass = helper.createDelegatingAnonymousRunnableClass(holder, delegatingMethod);
+		JDefinedClass anonymousRunnableClass = helper.createDelegatingAnonymousRunnableClass(holder, delegatingMethod, logClass);
 
 		{
 			// Execute Runnable
 
-			UiThread annotation = element.getAnnotation(UiThread.class);
 			long delay = annotation.delay();
 
 			if (holder.handler == null) {

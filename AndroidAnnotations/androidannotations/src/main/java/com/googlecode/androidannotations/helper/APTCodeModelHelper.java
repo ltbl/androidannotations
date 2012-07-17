@@ -209,7 +209,7 @@ public class APTCodeModelHelper {
 		throw new IllegalStateException("Unable to extract target name from JFieldRef");
 	}
 
-	public JDefinedClass createDelegatingAnonymousRunnableClass(EBeanHolder holder, JMethod delegatedMethod) {
+	public JDefinedClass createDelegatingAnonymousRunnableClass(EBeanHolder holder, JMethod delegatedMethod, JClass logClass) {
 
 		JCodeModel codeModel = holder.codeModel();
 		Classes classes = holder.classes();
@@ -230,7 +230,7 @@ public class APTCodeModelHelper {
 		JCatchBlock runCatch = runTry._catch(classes.RUNTIME_EXCEPTION);
 		JVar exceptionParam = runCatch.param("e");
 
-		JInvocation errorInvoke = classes.LOG.staticInvoke("e");
+		JInvocation errorInvoke = logClass.staticInvoke("e");
 
 		errorInvoke.arg(holder.eBean.name());
 		errorInvoke.arg("A runtime exception was thrown while executing code in a runnable");

@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.googlecode.androidannotations.helper.CanonicalNameConstants;
+
 /**
  * Should be used on method that must be run in the Ui thread
  * 
@@ -31,4 +33,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface UiThread {
 	long delay() default 0;
+
+	String logTo() default CanonicalNameConstants.LOG;
 }

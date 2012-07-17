@@ -42,6 +42,9 @@ public class BackgroundProcessor implements ElementProcessor {
 
 	@Override
 	public void process(Element element, JCodeModel codeModel, EBeansHolder eBeansHolder) throws JClassAlreadyExistsException {
+		Background annotation = element.getAnnotation(Background.class);
+		String logClassName = annotation.logTo();
+		JClass logClass = eBeansHolder.refClass(logClassName);
 
 		EBeanHolder holder = eBeansHolder.getEnclosingEBeanHolder(element);
 
@@ -49,7 +52,7 @@ public class BackgroundProcessor implements ElementProcessor {
 
 		JMethod delegatingMethod = helper.overrideAnnotatedMethod(executableElement, holder);
 
-		JDefinedClass anonymousRunnableClass = helper.createDelegatingAnonymousRunnableClass(holder, delegatingMethod);
+		JDefinedClass anonymousRunnableClass = helper.createDelegatingAnonymousRunnableClass(holder, delegatingMethod, logClass);
 
 		{
 			// Execute Runnable

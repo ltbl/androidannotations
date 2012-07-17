@@ -20,6 +20,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.googlecode.androidannotations.helper.CanonicalNameConstants;
+
 /**
  * Should be used on method that must be run in a background thread. This method
  * must belong to an activity annotated with @Layout.
@@ -28,4 +30,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.METHOD)
 public @interface Background {
+	String logTo() default CanonicalNameConstants.LOG;
 }
